@@ -1,5 +1,4 @@
 import React from "react";
-import { TopNavBar } from "@/components/TopNavBar";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/Button";
 export default function SuggestStorePage() {
   return (
     <>
-      <TopNavBar />
       <main className="relative z-10 pt-24 pb-20 min-h-[calc(100vh-160px)]">
         <div className="max-w-[800px] mx-auto px-6">
 
@@ -58,11 +56,6 @@ export default function SuggestStorePage() {
         </div>
       </main>
 
-      <footer className="relative z-10 border-t border-surface-container-high mt-12 py-10 text-center">
-        <p className="font-body-sm text-on-surface-variant">
-          © 2026 BharatPCPrice. All prices verified from 500+ authorized retailers across India.
-        </p>
-      </footer>
-    </>
+          </>
   );
 }

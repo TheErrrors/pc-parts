@@ -1,4 +1,3 @@
-import { TopNavBar } from "@/components/TopNavBar";
 
 import React from "react";
 import Link from "next/link";
@@ -289,11 +288,6 @@ export default function ProductDetailPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-surface-container-high mt-12 py-10 text-center">
-        <p className="font-body-sm text-on-surface-variant">
-          © 2026 BharatPCPrice. All prices verified from 500+ authorized retailers across India.
-        </p>
-      </footer>
-    </>
+          </>
   );
 }

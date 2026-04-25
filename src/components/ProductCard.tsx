@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: {
@@ -59,8 +60,10 @@ export function ProductCard({ product, isSelected, onToggleCompare }: ProductCar
       </div>
 
       {/* Action */}
-      <Button variant="ghost" className="w-full mt-auto">
-        View Deals
+      <Button variant="ghost" className="w-full mt-auto" asChild>
+        <Link href={`/products/graphics-cards/${product.id}`}>
+          View Deals
+        </Link>
       </Button>
     </div>
   );

@@ -21,7 +21,7 @@ export function TopNavBar() {
           <Link href="#" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Deals</Link>
         </nav>
         <div className="ml-auto flex items-center gap-4">
-          <Link href="/dashboard" className="scale-95 duration-150 ease-in-out text-on-surface-variant hover:text-primary flex items-center justify-center">
+          <Link href="/auth" className="scale-95 duration-150 ease-in-out text-on-surface-variant hover:text-primary flex items-center justify-center">
             <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>account_circle</span>
           </Link>
         </div>
