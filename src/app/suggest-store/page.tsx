@@ -14,7 +14,7 @@ export default function SuggestStorePage() {
             <h1 className="font-display text-headline-lg text-on-surface mb-3">
               Suggest an Online Store
             </h1>
-            <p className="font-body-md text-on-surface-variant max-w-xl mx-auto">
+            <p className="font-body-md text-on-surface-variant max-w-lg mx-auto text-center">
               Know a trusted Indian PC retailer we missed? Let us know so we can add them to our pricing engine.
             </p>
           </div>
