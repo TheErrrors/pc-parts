@@ -17,13 +17,8 @@ interface ProductCardProps {
   onToggleCompare?: (id: string) => void;
 }
 
-import { usePathname } from "next/navigation";
 
-export function ProductCard({ product, isSelected, onToggleCompare }: ProductCardProps) {
-  const pathname = usePathname();
-  // Assume pathname is like /products/graphics-cards or /
-  const category = pathname.includes('/products/') ? pathname.split('/')[2] : 'graphics-cards';
-
+export function ProductCard({ product, isSelected, onToggleCompare, category = "graphics-cards" }: ProductCardProps & { category?: string }) {
   return (
     <div className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full`}>
       {/* Compare Checkbox */}

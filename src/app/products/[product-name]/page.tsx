@@ -54,7 +54,8 @@ const products = [
   },
 ];
 
-export default function GraphicsCardsPage() {
+export default function CategoryPage({ params }: { params: { 'product-name': string } }) {
+  const categoryName = params['product-name'];
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
   const router = useRouter();
 
@@ -84,11 +85,11 @@ export default function GraphicsCardsPage() {
               <span className="material-symbols-outlined text-[16px]">chevron_right</span>
               <Link href="#" className="hover:text-primary transition-colors">Components</Link>
               <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-              <span className="text-on-surface font-medium">Graphics Cards</span>
+              <span className="text-on-surface font-medium capitalize">{categoryName.replace('-', ' ')}</span>
             </nav>
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <h1 className="font-display text-headline-lg text-on-surface">Graphics Cards</h1>
+              <h1 className="font-display text-headline-lg text-on-surface capitalize">{categoryName.replace('-', ' ')}</h1>
               <div className="flex items-center gap-2">
                 <span className="font-body-sm text-on-surface-variant">Sort by:</span>
                 <Select
@@ -111,6 +112,7 @@ export default function GraphicsCardsPage() {
                     product={product}
                     isSelected={selectedForCompare.includes(product.id)}
                     onToggleCompare={handleToggleCompare}
+                    category={categoryName}
                   />
                 ))}
               </div>
