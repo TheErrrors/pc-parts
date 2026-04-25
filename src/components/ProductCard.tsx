@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: {
@@ -10,16 +13,20 @@ interface ProductCardProps {
     specs: string[];
     icon: string;
   };
+  isSelected?: boolean;
+  onToggleCompare?: (id: string) => void;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, isSelected, onToggleCompare }: ProductCardProps) {
   return (
-    <div className="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-4 hover:border-primary hover:shadow-layer-2 transition-all cursor-pointer group relative flex flex-col h-full">
+    <div className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full`}>
       {/* Compare Checkbox */}
       <div className="absolute top-4 left-4 z-10">
         <Checkbox
           label="Compare"
           className="font-label-md text-[11px] text-muted-foreground"
+          checked={isSelected}
+          onChange={() => onToggleCompare && onToggleCompare(product.id)}
         />
       </div>
 
@@ -53,8 +60,10 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Action */}
-      <Button variant="ghost" className="w-full mt-auto">
-        View Deals
+      <Button variant="ghost" className="w-full mt-auto" asChild>
+        <Link href={`/products/graphics-cards/${product.id}`}>
+          View Deals
+        </Link>
       </Button>
     </div>
   );

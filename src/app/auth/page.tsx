@@ -9,14 +9,10 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-surface">
+    <div className="flex-1 w-full flex flex-col md:flex-row bg-surface relative z-10">
 
       {/* Left Panel (Brand & Trust - Desktop Only) */}
-      <div className="hidden md:flex w-1/2 bg-surface-container relative overflow-hidden items-center justify-center p-12">
-        {/* Background Patterns from globals.css */}
-        <div className="absolute inset-0 bg-pattern opacity-50 z-0"></div>
-        <div className="absolute inset-0 bg-grid opacity-30 z-0"></div>
-
+      <div className="hidden md:flex w-1/2 bg-surface-container/60 backdrop-blur-sm relative overflow-hidden items-center justify-center p-12 border-r border-surface-container-high">
         <div className="relative z-10 flex flex-col justify-center max-w-[480px] mx-auto w-full text-left">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold font-display text-primary flex items-center gap-3 mb-12">
@@ -49,7 +45,7 @@ export default function AuthPage() {
       </div>
 
       {/* Right Panel (Auth Form) */}
-      <div className="w-full md:w-1/2 min-h-screen bg-surface-container-lowest flex items-center justify-center p-6 sm:p-12 relative z-20">
+      <div className="w-full md:w-1/2 flex-1 flex items-center justify-center p-6 sm:p-12 relative z-20 bg-surface-container-lowest">
 
         {/* Mobile Logo Back Link (Hidden on Desktop) */}
         <div className="absolute top-6 left-6 md:hidden">

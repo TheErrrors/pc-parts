@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { TopNavBar } from "@/components/TopNavBar";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,11 +33,15 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="bg-surface text-on-surface font-body-md antialiased relative min-h-screen"
+        className="bg-surface text-on-surface font-body-md antialiased relative min-h-screen flex flex-col"
       >
         <div className="bg-pattern"></div>
         <div className="bg-grid"></div>
-        {children}
+        <TopNavBar />
+        <div className="flex-1 flex flex-col w-full">
+          {children}
+        </div>
+        <Footer />
       </body>
     </html>
   );
