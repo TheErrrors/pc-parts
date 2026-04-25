@@ -72,7 +72,7 @@ export default function GraphicsCardsPage() {
 
   return (
     <>
-      {/* TopNavBar */}
+
 
       <main className="relative z-10 pt-24 pb-20">
         <div className="max-w-[1280px] mx-auto px-6">
@@ -135,7 +135,7 @@ export default function GraphicsCardsPage() {
         </div>
       </main>
 
-      {/* Footer */}
+
           </>
   );
 }

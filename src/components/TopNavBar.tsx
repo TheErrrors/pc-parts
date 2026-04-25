@@ -18,7 +18,7 @@ export function TopNavBar() {
           <Link href="/products/graphics-cards" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Build Guides</Link>
           <Link href="/contribute" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Upload Quote</Link>
           <Link href="/suggest-store" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Suggest a Store</Link>
-          <Link href="#" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Deals</Link>
+          <Link href="/products/deals" className="text-on-surface-variant hover:text-on-surface transition-colors duration-200">Deals</Link>
         </nav>
         <div className="ml-auto flex items-center gap-4">
           <Link href="/auth" className="scale-95 duration-150 ease-in-out text-on-surface-variant hover:text-primary flex items-center justify-center">

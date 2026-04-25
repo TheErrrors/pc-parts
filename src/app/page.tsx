@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      {/* TopNavBar */}
+
 
       <main className="relative z-10 pt-24 pb-20 space-y-20">
         {/* Hero Section */}
@@ -181,7 +181,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
+
           </>
   );
 }
