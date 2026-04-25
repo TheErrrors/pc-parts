@@ -135,14 +135,16 @@ export default function ComparePage() {
 
                   {/* Product Header Cards */}
                   {products.map((product) => (
-                    <div key={product.id} className="p-4 relative flex flex-col border border-surface-container-high rounded-xl bg-surface-container-lowest mx-2">
-                      <button
-                        onClick={() => removeProduct(product.id)}
-                        className="absolute top-2 right-2 p-1 text-on-surface-variant hover:text-red-500 hover:bg-red-50 rounded-md transition-colors z-10"
-                        title="Remove"
-                      >
-                        <span className="material-symbols-outlined text-[18px]">close</span>
-                      </button>
+                    <div key={product.id} className="p-4 flex flex-col border border-surface-container-high rounded-xl bg-surface-container-lowest mx-2">
+                      <div className="flex justify-end mb-2">
+                        <button
+                          onClick={() => removeProduct(product.id)}
+                          className="p-1 text-on-surface-variant hover:text-red-500 hover:bg-red-50 rounded-md transition-colors"
+                          title="Remove"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">close</span>
+                        </button>
+                      </div>
 
                       <div className="bg-surface-container rounded-lg h-[120px] flex items-center justify-center mb-4">
                         <span className="material-symbols-outlined text-[48px] text-on-surface-variant/30">
@@ -178,7 +180,7 @@ export default function ComparePage() {
                     return (
                       <div
                         key={specKey}
-                        className={`grid ${gridColumnsClass} ${isDifferent ? "bg-primary/5" : "bg-transparent"} hover:bg-surface-container/30 transition-colors`}
+                        className={`grid ${gridColumnsClass} ${isDifferent ? "bg-primary/15 border-l-4 border-primary" : "bg-transparent border-l-4 border-transparent"} hover:bg-surface-container/30 transition-colors`}
                       >
                         {/* Spec Label */}
                         <div className="p-4 flex items-center font-body-sm font-medium text-on-surface-variant border-r border-surface-container-high/50">
