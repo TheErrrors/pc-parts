@@ -23,7 +23,8 @@ create table public.components (
   name text,
   category text,
   msrp integer,
-  specs jsonb
+  specs jsonb,
+  mdcomputers_url text
 );
 
 -- Enable RLS for components
