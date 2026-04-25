@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Filters } from "@/components/Filters";
 import { ProductCard } from "@/components/ProductCard";
+import { Select } from "@/components/ui/Select";
 
 const products = [
   {
@@ -97,11 +98,10 @@ export default function GraphicsCardsPage() {
               <h1 className="font-display text-headline-lg text-on-surface">Graphics Cards</h1>
               <div className="flex items-center gap-2">
                 <span className="font-body-sm text-on-surface-variant">Sort by:</span>
-                <select className="bg-surface-container-lowest border border-surface-container-high rounded-lg px-3 py-1.5 font-body-sm text-on-surface focus:outline-none focus:border-primary cursor-pointer appearance-none pr-8 relative bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%24%2024%22%20fill%3D%22none%22%20stroke%3D%22%236c7a71%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat">
-                  <option>Price (Low to High)</option>
-                  <option>Price (High to Low)</option>
-                  <option>Popularity</option>
-                </select>
+                <Select
+                  options={["Price (Low to High)", "Price (High to Low)", "Popularity"]}
+                  value="Price (Low to High)"
+                />
               </div>
             </div>
           </div>

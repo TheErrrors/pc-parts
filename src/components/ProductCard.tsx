@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/Button";
+import { Checkbox } from "@/components/ui/Checkbox";
 
 interface ProductCardProps {
   product: {
@@ -15,18 +16,15 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-4 hover:border-primary hover:shadow-layer-2 transition-all cursor-pointer group relative flex flex-col h-full">
       {/* Compare Checkbox */}
-      <div className="absolute top-6 right-6 z-10">
-        <label className="flex items-center gap-2 cursor-pointer scale-95 hover:scale-100 active:scale-95 transition-transform">
-          <input
-            type="checkbox"
-            className="w-4 h-4 rounded border-surface-container-high text-primary focus:ring-primary focus:ring-offset-surface bg-surface-container-lowest transition-all"
-          />
-          <span className="sr-only">Compare</span>
-        </label>
+      <div className="absolute top-4 left-4 z-10">
+        <Checkbox
+          label="Compare"
+          className="font-label-md text-[11px] text-muted-foreground"
+        />
       </div>
 
       {/* Image Area */}
-      <div className="bg-surface-container rounded-xl h-[180px] flex items-center justify-center mb-4 relative">
+      <div className="bg-surface-container rounded-xl h-[180px] flex items-center justify-center mb-4 relative mt-8">
         <span className="material-symbols-outlined text-[64px] text-on-surface-variant/30">
           {product.icon}
         </span>

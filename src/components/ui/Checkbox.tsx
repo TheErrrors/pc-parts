@@ -1,20 +1,34 @@
+"use client";
 import React from "react";
+import * as RadixCheckbox from "@radix-ui/react-checkbox";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label?: string;
 }
 
-export function Checkbox({ label, className = "", ...props }: CheckboxProps) {
+export function Checkbox({ label, className = "", checked, onChange, ...props }: CheckboxProps) {
   return (
-    <label className={`flex items-center gap-2 cursor-pointer group ${className}`}>
-      <input
-        type="checkbox"
-        className="w-4 h-4 rounded border-surface-container-high text-primary focus:ring-primary focus:ring-offset-surface bg-surface-container-lowest transition-all scale-95 group-hover:scale-100 group-active:scale-95"
-        {...props}
-      />
-      <span className="font-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
-        {label}
-      </span>
+    <label className={`flex items-center gap-2 cursor-pointer group w-fit ${className}`} onClick={(e) => e.stopPropagation()}>
+      <RadixCheckbox.Root
+        className="peer flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-surface-container-highest bg-surface-container-lowest transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface data-[state=checked]:border-primary data-[state=checked]:bg-primary"
+        checked={checked as boolean}
+        onCheckedChange={(checkedState) => {
+           if (onChange) {
+              const event = { target: { checked: checkedState === true } } as React.ChangeEvent<HTMLInputElement>;
+              onChange(event);
+           }
+        }}
+      >
+        <RadixCheckbox.Indicator className="flex items-center justify-center text-white">
+          <CheckIcon className="h-3.5 w-3.5" />
+        </RadixCheckbox.Indicator>
+      </RadixCheckbox.Root>
+      {label && (
+        <span className={`text-on-surface-variant group-hover:text-on-surface transition-colors select-none ${className.includes("font-") ? "" : "font-body-sm"}`}>
+          {label}
+        </span>
+      )}
     </label>
   );
 }

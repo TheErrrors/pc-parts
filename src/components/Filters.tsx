@@ -3,7 +3,7 @@
 import React from "react";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Toggle } from "@/components/ui/Toggle";
-import { Input } from "@/components/ui/Input";
+import { RangeSlider } from "@/components/ui/RangeSlider";
 
 export function Filters() {
   return (
@@ -40,10 +40,8 @@ export function Filters() {
         {/* Price Range */}
         <div>
           <h3 className="font-body-sm font-semibold text-on-surface mb-3">Price Range</h3>
-          <div className="flex items-center gap-2">
-            <Input type="number" placeholder="Min" />
-            <span className="text-on-surface-variant">-</span>
-            <Input type="number" placeholder="Max" />
+          <div className="pt-2 pb-1">
+            <RangeSlider min={0} max={150000} step={1000} defaultValue={[25000, 100000]} />
           </div>
         </div>
 
