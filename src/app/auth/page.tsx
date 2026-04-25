@@ -2,11 +2,52 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { createClient } from "@/utils/supabase/client";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (isLogin) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push("/");
+      }
+    } else {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username,
+          },
+        },
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push("/");
+      }
+    }
+  };
 
   return (
     <div className="flex-1 w-full flex flex-col md:flex-row bg-surface relative z-10">
@@ -94,16 +135,28 @@ export default function AuthPage() {
           </div>
 
           {/* Form */}
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-5" onSubmit={handleAuth}>
             {!isLogin && (
               <div>
                 <label className="block font-body-sm font-medium text-on-surface mb-1.5">Username</label>
-                <Input type="text" placeholder="Gamer99" required />
+                <Input
+                  type="text"
+                  placeholder="Gamer99"
+                  required
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
             )}
             <div>
               <label className="block font-body-sm font-medium text-on-surface mb-1.5">Email</label>
-              <Input type="email" placeholder="you@example.com" required />
+              <Input
+                type="email"
+                placeholder="you@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
@@ -114,8 +167,20 @@ export default function AuthPage() {
                   </Link>
                 )}
               </div>
-              <Input type="password" placeholder="••••••••" required />
+              <Input
+                type="password"
+                placeholder="••••••••"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
+
+            {error && (
+              <div className="text-red-500 font-label-md bg-red-50/50 p-2 rounded-md">
+                {error}
+              </div>
+            )}
 
             <div className="pt-2">
               <Button type="submit" variant="primary" className="w-full h-11 text-base">
