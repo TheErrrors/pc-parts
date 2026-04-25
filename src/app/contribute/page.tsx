@@ -34,7 +34,7 @@ const recentVerifications = [
 export default function ContributePage() {
   return (
     <>
-      {/* TopNavBar */}
+
 
       <main className="relative z-10 pt-24 pb-20">
         <div className="max-w-[1000px] mx-auto px-6">

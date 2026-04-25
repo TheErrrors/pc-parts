@@ -109,9 +109,9 @@ export default function AuthPage() {
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block font-body-sm font-medium text-on-surface">Password</label>
                 {isLogin && (
-                  <a href="#" className="font-label-md text-[12px] text-primary hover:underline">
+                  <Link href="#" className="font-label-md text-[12px] text-primary hover:underline">
                     Forgot Password?
-                  </a>
+                  </Link>
                 )}
               </div>
               <Input type="password" placeholder="••••••••" required />

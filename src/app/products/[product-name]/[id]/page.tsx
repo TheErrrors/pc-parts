@@ -77,7 +77,12 @@ const productData = {
   }
 };
 
+import { usePathname } from "next/navigation";
+
 export default function ProductDetailPage() {
+  const pathname = usePathname();
+  const category = pathname.split('/')[2] || 'graphics-cards';
+
   return (
     <>
 
@@ -87,7 +92,7 @@ export default function ProductDetailPage() {
           <nav className="flex items-center gap-2 font-body-sm text-on-surface-variant mb-6">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <Link href="/products/graphics-cards" className="hover:text-primary transition-colors">Graphics Cards</Link>
+            <Link href={`/products/${category}`} className="hover:text-primary transition-colors">Graphics Cards</Link>
             <span className="material-symbols-outlined text-[16px]">chevron_right</span>
             <span className="text-on-surface font-medium">{productData.title}</span>
           </nav>
