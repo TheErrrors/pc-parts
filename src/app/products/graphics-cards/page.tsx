@@ -1,7 +1,11 @@
+"use client";
+
 import { TopNavBar } from "@/components/TopNavBar";
 
-import React from "react";
+
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Filters } from "@/components/Filters";
 import { ProductCard } from "@/components/ProductCard";
 import { Select } from "@/components/ui/Select";
@@ -52,6 +56,21 @@ const products = [
 ];
 
 export default function GraphicsCardsPage() {
+  const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
+  const router = useRouter();
+
+  const handleToggleCompare = (id: string) => {
+    setSelectedForCompare((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((itemId) => itemId !== id);
+      }
+      if (prev.length < 4) {
+        return [...prev, id];
+      }
+      return prev;
+    });
+  };
+
   return (
     <>
       {/* TopNavBar */}
@@ -88,11 +107,31 @@ export default function GraphicsCardsPage() {
             <div className="flex-1 min-w-0">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isSelected={selectedForCompare.includes(product.id)}
+                    onToggleCompare={handleToggleCompare}
+                  />
                 ))}
               </div>
             </div>
           </div>
+
+          {/* Local Compare Action Bar */}
+          {selectedForCompare.length >= 2 && (
+            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-surface-container-lowest border border-surface-container-high shadow-lg rounded-full px-6 py-3 flex items-center gap-6 z-50 animate-in slide-in-from-bottom-8">
+              <div className="font-body-md font-medium text-on-surface">
+                {selectedForCompare.length} items selected
+              </div>
+              <button
+                onClick={() => router.push(`/compare?items=${selectedForCompare.join(',')}`)}
+                className="bg-primary text-white hover:bg-primary/90 px-5 py-2 rounded-full font-label-md transition-colors scale-95 hover:scale-100 active:scale-95"
+              >
+                Compare Now
+              </button>
+            </div>
+          )}
 
         </div>
       </main>
