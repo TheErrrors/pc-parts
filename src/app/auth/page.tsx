@@ -17,7 +17,7 @@ export default function AuthPage() {
         <div className="absolute inset-0 bg-pattern opacity-50 z-0"></div>
         <div className="absolute inset-0 bg-grid opacity-30 z-0"></div>
 
-        <div className="relative z-10 flex flex-col items-center text-center max-w-md">
+        <div className="relative z-10 flex flex-col justify-center max-w-[480px] mx-auto w-full text-left">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold font-display text-primary flex items-center gap-3 mb-12">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-[#009b6b] rounded-lg flex items-center justify-center">
@@ -28,22 +28,22 @@ export default function AuthPage() {
             BharatPCPrice
           </Link>
 
-          <h1 className="font-display text-headline-lg text-on-surface mb-6">
+          <h1 className="font-display text-headline-lg text-on-surface mb-4">
             Build smarter. Save more.
           </h1>
-          <p className="font-body-lg text-on-surface-variant leading-relaxed">
+          <p className="font-body-lg text-on-surface-variant leading-relaxed mb-12">
             Join thousands of Indian PC enthusiasts tracking real-time prices across 500+ verified retailers.
           </p>
-        </div>
 
-        {/* Floating Trust Card */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[80%] max-w-sm bg-surface-container-lowest/90 backdrop-blur-md border border-surface-container-high rounded-xl p-5 shadow-lg flex items-center gap-4 z-10">
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[24px] text-primary">monitoring</span>
-          </div>
-          <div>
-            <div className="font-body-sm font-semibold text-on-surface">Community Impact</div>
-            <div className="font-label-md text-[13px] text-on-surface-variant">Over <span className="text-primary font-bold">₹10 Lakh</span> saved this month.</div>
+          {/* Trust Card */}
+          <div className="bg-surface-container-lowest/90 backdrop-blur-md border border-surface-container-high rounded-xl p-5 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[24px] text-primary">monitoring</span>
+            </div>
+            <div>
+              <div className="font-body-sm font-semibold text-on-surface">Community Impact</div>
+              <div className="font-label-md text-[13px] text-on-surface-variant">Over <span className="text-primary font-bold">₹10 Lakh</span> saved this month.</div>
+            </div>
           </div>
         </div>
       </div>
