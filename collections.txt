@@ -1,3 +1,12 @@
 https://elitehubs.com/collections/processors,Processor
 https://elitehubs.com/collections/motherboards,Motherboard
+https://elitehubs.com/collections/motherboard,Motherboard
 https://elitehubs.com/collections/graphic-cards,Graphics Card
+https://elitehubs.com/collections/pc-cabinet,PC Cabinet
+https://elitehubs.com/collections/pc-coolers,PC Cooler
+https://elitehubs.com/collections/power-supply-unit-psu,Power Supply
+https://elitehubs.com/collections/ram,RAM
+https://elitehubs.com/collections/ssd,SSD
+https://elitehubs.com/collections/gaming-mouse,Gaming Mouse
+https://elitehubs.com/collections/gaming-keyboard,Gaming Keyboard
+https://elitehubs.com/collections/monitor,Monitor
