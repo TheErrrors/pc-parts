@@ -1,0 +1,3 @@
+https://elitehubs.com/collections/processors,Processor
+https://elitehubs.com/collections/motherboards,Motherboard
+https://elitehubs.com/collections/graphic-cards,Graphics Card
