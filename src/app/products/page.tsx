@@ -1,17 +1,20 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { Filters } from "@/components/Filters";
-import { ProductCard } from "@/components/ProductCard";
-import { Select } from "@/components/ui/Select";
+import { ProductGridWrapper } from "@/components/ProductGridWrapper";
+import { SortSelect } from "@/components/SortSelect";
 import { createClient } from "@/utils/supabase/server";
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string, page?: string, query?: string }> }) {
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string, page?: string, query?: string, inStock?: string, sort?: string }> }) {
   const resolvedSearchParams = await searchParams;
   const supabase = createClient();
   const category = resolvedSearchParams.category;
   const query = resolvedSearchParams.query;
+  const inStock = resolvedSearchParams.inStock;
+  const sort = resolvedSearchParams.sort;
+
   const page = parseInt(resolvedSearchParams.page || '1');
   const limit = 20;
   const start = (page - 1) * limit;
@@ -25,6 +28,19 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
 
   if (query) {
     queryBuilder = queryBuilder.or(`name.ilike.%${query}%,brand.ilike.%${query}%`);
+  }
+
+  if (inStock === 'true') {
+    queryBuilder = queryBuilder.eq('is_in_stock', true);
+  }
+
+  if (sort === 'price_desc') {
+    queryBuilder = queryBuilder.order('price', { ascending: false });
+  } else if (sort === 'newest') {
+    queryBuilder = queryBuilder.order('created_at', { ascending: false });
+  } else {
+    // Default or price_asc
+    queryBuilder = queryBuilder.order('price', { ascending: true });
   }
 
   const { data: products, error } = await queryBuilder;
@@ -54,10 +70,9 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
               <h1 className="font-display text-headline-lg text-on-surface capitalize">{category ? `${category.replace('-', ' ')}s` : 'All Components'}</h1>
               <div className="flex items-center gap-2">
                 <span className="font-body-sm text-on-surface-variant">Sort by:</span>
-                <Select
-                  options={["Price (Low to High)", "Price (High to Low)", "Popularity"]}
-                  value="Price (Low to High)"
-                />
+                <Suspense fallback={<div className="w-[180px] h-9 bg-surface-container rounded-md animate-pulse"></div>}>
+                  <SortSelect />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -69,14 +84,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
 
             {/* Main Content Area: Product Grid */}
             <div className="flex-1 min-w-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products && products.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                  />
-                ))}
-              </div>
+              <ProductGridWrapper products={products || []} />
               {/* Basic Pagination Controls */}
               <div className="flex justify-center mt-8 gap-4">
                 {page > 1 && (

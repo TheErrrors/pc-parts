@@ -7,9 +7,20 @@ import { RangeSlider } from "@/components/ui/RangeSlider";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { useState } from "react";
+
+const allCategories = [
+  "Processor", "Graphics Card", "Motherboard", "Memory",
+  "Storage", "Cabinet", "Power Supply", "Cooling",
+  "Monitor", "Mouse", "Keyboard", "Peripherals"
+];
+
 export function Filters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [showAllCategories, setShowAllCategories] = useState(false);
+
+  const displayedCategories = showAllCategories ? allCategories : allCategories.slice(0, 4);
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams);
@@ -23,11 +34,29 @@ export function Filters() {
 
     router.push(`/products?${params.toString()}`);
   }
+
+  const handleInStockToggle = (checked: boolean) => {
+    const params = new URLSearchParams(searchParams);
+    if (checked) {
+      params.set("inStock", "true");
+    } else {
+      params.delete("inStock");
+    }
+    router.push(`/products?${params.toString()}`);
+  }
+
+  const handleClearAll = () => {
+    router.push(`/products`);
+  }
+
   return (
     <div className="w-[280px] shrink-0 hidden lg:block sticky top-24 self-start">
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-display text-headline-md text-on-surface">Filters</h2>
-        <button className="font-label-md text-primary hover:underline scale-95 hover:scale-100 transition-all">
+        <button
+          onClick={handleClearAll}
+          className="font-label-md text-primary hover:underline scale-95 hover:scale-100 transition-all"
+        >
           Clear All
         </button>
       </div>
@@ -37,11 +66,23 @@ export function Filters() {
         <div>
           <h3 className="font-body-sm font-semibold text-on-surface mb-3">Categories</h3>
           <div className="space-y-2.5">
-            <Checkbox label="Graphics Card" onChange={() => handleCategoryChange("Graphics Card")} checked={searchParams.get("category") === "Graphics Card"} />
-            <Checkbox label="Processor" onChange={() => handleCategoryChange("Processor")} checked={searchParams.get("category") === "Processor"} />
-            <Checkbox label="Motherboard" onChange={() => handleCategoryChange("Motherboard")} checked={searchParams.get("category") === "Motherboard"} />
-            <Checkbox label="Cabinet" onChange={() => handleCategoryChange("Cabinet")} checked={searchParams.get("category") === "Cabinet"} />
+            {displayedCategories.map(cat => (
+              <Checkbox
+                key={cat}
+                label={cat}
+                onChange={() => handleCategoryChange(cat)}
+                checked={searchParams.get("category") === cat}
+              />
+            ))}
           </div>
+          {allCategories.length > 4 && (
+            <button
+              onClick={() => setShowAllCategories(!showAllCategories)}
+              className="mt-3 font-label-md text-primary hover:underline"
+            >
+              {showAllCategories ? "Show Less" : `+ Show ${allCategories.length - 4} More`}
+            </button>
+          )}
         </div>
 
         {/* Brand */}
@@ -66,7 +107,7 @@ export function Filters() {
         {/* Availability */}
         <div>
           <h3 className="font-body-sm font-semibold text-on-surface mb-3">Availability</h3>
-          <Toggle label="In-Stock Only" />
+          <Toggle label="In-Stock Only" defaultChecked={searchParams.get("inStock") === "true"} onChange={handleInStockToggle} />
         </div>
       </div>
     </div>

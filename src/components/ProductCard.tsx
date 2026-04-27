@@ -29,9 +29,12 @@ function getOptimizedImage(url: string | undefined) {
   return url;
 }
 
+import { useRouter } from "next/navigation";
+
 export function ProductCard({ product, isSelected, onToggleCompare }: ProductCardProps) {
   const mainImage = getOptimizedImage(product.images?.[0]);
   const isOutOfStock = product.is_in_stock === false;
+  const router = useRouter();
 
   // Simple priority map for "Quick Specs" preview
   const priorityKeys = ["Chipset", "VRAM", "Socket", "Form Factor", "Capacity", "Memory Type", "Wattage", "Efficiency"];
@@ -40,22 +43,31 @@ export function ProductCard({ product, isSelected, onToggleCompare }: ProductCar
     .map(([_, value]) => value)
     .slice(0, 2);
 
+  const handleCardClick = () => {
+    router.push(`/product/${product.slug}`);
+  };
+
   return (
-    <div className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full ${isOutOfStock ? 'opacity-70' : ''}`}>
+    <div
+      onClick={handleCardClick}
+      className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full ${isOutOfStock ? 'opacity-70' : ''}`}
+    >
       {/* Compare Checkbox */}
-      <div className="absolute top-4 left-4 z-10">
+      <div className="absolute top-4 left-4 z-20" onClick={(e) => e.stopPropagation()}>
         <Checkbox
           label="Compare"
           className="font-label-md text-[11px] text-muted-foreground"
           checked={isSelected}
-          onChange={() => onToggleCompare && onToggleCompare(product.id)}
+          onChange={() => {
+             if (onToggleCompare) onToggleCompare(product.id);
+          }}
         />
       </div>
 
       {/* Image Area */}
-      <div className="bg-surface-container rounded-xl h-[180px] flex items-center justify-center mb-4 relative mt-8 overflow-hidden">
+      <div className="bg-white rounded-xl aspect-square w-full flex items-center justify-center mb-4 relative mt-8 overflow-hidden border border-surface-container-high/50">
         {mainImage ? (
-          <img src={mainImage} alt={product.name} className="object-contain w-full h-full p-4" />
+          <img src={mainImage} alt={product.name} className="object-contain w-full h-full p-4 mix-blend-multiply" />
         ) : (
           <span className="material-symbols-outlined text-[64px] text-on-surface-variant/30">
             developer_board
@@ -91,10 +103,8 @@ export function ProductCard({ product, isSelected, onToggleCompare }: ProductCar
       </div>
 
       {/* Action */}
-      <Button variant="ghost" className="w-full mt-auto" asChild disabled={isOutOfStock}>
-        <Link href={`/product/${product.slug}`}>
-          {isOutOfStock ? "Out of Stock" : "View Deals"}
-        </Link>
+      <Button variant="ghost" className="w-full mt-auto pointer-events-none" disabled={isOutOfStock}>
+        {isOutOfStock ? "Out of Stock" : "View Deals"}
       </Button>
     </div>
   );
