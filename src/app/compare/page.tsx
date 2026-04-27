@@ -114,7 +114,7 @@ function CompareContent() {
               <h2 className="font-display text-headline-md text-on-surface mb-2">Nothing to compare yet</h2>
               <p className="font-body-sm text-on-surface-variant max-w-sm mx-auto text-center mb-6">Select up to 4 components from our product listings to analyze them side-by-side.</p>
               <Button variant="outline" asChild>
-                <Link href="/products/graphics-cards">Browse Components</Link>
+                <Link href="/products">Browse Components</Link>
               </Button>
             </div>
           ) : (

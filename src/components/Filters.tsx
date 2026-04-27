@@ -13,11 +13,14 @@ export function Filters() {
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams);
-    if (category) {
-      params.set("category", category);
-    } else {
+    const currentCategory = searchParams.get("category");
+
+    if (currentCategory === category) {
       params.delete("category");
+    } else {
+      params.set("category", category);
     }
+
     router.push(`/products?${params.toString()}`);
   }
   return (

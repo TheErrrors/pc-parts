@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { StockBadge } from "@/components/ui/StockBadge";
+import { ImageGallery } from "@/components/ImageGallery";
 
 const onlineStores = [
   {
@@ -56,15 +57,30 @@ const localPrices = [
 
 
 import { createClient } from "@/utils/supabase/server";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const slug = (await params).slug;
   const supabase = createClient();
-  const { data: product } = await supabase.from('products').select('*').eq('slug', params.slug).single();
+  const { data: product } = await supabase.from('products').select('name').eq('slug', slug).single();
 
   if (!product) {
-    return <div className="pt-32 text-center text-xl">Product not found</div>;
+    return { title: 'Product Not Found' };
+  }
+
+  return { title: `${product.name} | BharatPCPrice` };
+}
+
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const slug = (await params).slug;
+  const supabase = createClient();
+  const { data: product } = await supabase.from('products').select('*').eq('slug', slug).single();
+
+  if (!product) {
+    notFound();
   }
 
   const isOutOfStock = product.is_in_stock === false;
@@ -75,54 +91,29 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 
       <main className="relative z-10 pt-24 pb-20">
         <div className="max-w-[1280px] mx-auto px-6">
-          {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 font-body-sm text-on-surface-variant mb-6">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <Link href="/products" className="hover:text-primary transition-colors">Components</Link>
-            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <Link href={`/products?category=${product.category}`} className="hover:text-primary transition-colors">{product.category}</Link>
-            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <span className="text-on-surface font-medium">{product.name}</span>
-          </nav>
+          {/* Backlink */}
+          <Link href={`/products?category=${product.category}`} className="inline-flex items-center gap-2 font-body-sm text-on-surface-variant hover:text-primary transition-colors mb-6 group">
+            <span className="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            Back to {product.category || 'Products'}
+          </Link>
 
           {/* Product Overview Header (1:2 Grid) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
 
             {/* Left Column: Image Gallery */}
-            <div className="col-span-1">
-              <div className="bg-surface-container-lowest border border-surface-container-high rounded-2xl h-[320px] flex items-center justify-center shadow-sm overflow-hidden p-4">
-                {product.images && product.images.length > 0 ? (
-                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
-                ) : (
-                  <span className="material-symbols-outlined text-[120px] text-surface-container-high">
-                    developer_board
-                  </span>
-                )}
-              </div>
-              {/* Optional: Gallery thumbnails could go here */}
-              {product.images && product.images.length > 1 && (
-                <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
-                   {product.images.map((img: string, i: number) => (
-                      <div key={i} className="w-16 h-16 border rounded-md shrink-0 p-1 flex items-center justify-center cursor-pointer hover:border-primary">
-                          <img src={img} alt="" className="w-full h-full object-contain" />
-                      </div>
-                   ))}
-                </div>
-              )}
-            </div>
+            <ImageGallery images={product.images || []} alt={product.name} />
 
             {/* Right Column: Details */}
             <div className="col-span-1 lg:col-span-2 flex flex-col justify-center">
+              <div className="font-label-md text-on-surface-variant uppercase tracking-wider mb-2">
+                {product.brand || product.category}
+              </div>
               <h1 className="text-headline-lg font-display text-on-surface mb-3">
                 {product.name}
               </h1>
 
               {/* Tags Row */}
               <div className="flex flex-wrap items-center gap-3 mb-8">
-                <span className="px-3 py-1 bg-surface-container rounded-md font-body-sm text-[13px] text-on-surface-variant border border-surface-container-high">
-                  Brand: {product.brand || product.category}
-                </span>
                 <span className="flex items-center gap-1.5 px-3 py-1 bg-[#22c55e]/10 text-[#006c49] rounded-md font-body-sm text-[13px] border border-[#22c55e]/20">
                   <span className="material-symbols-outlined text-[16px]">verified</span>
                   Verified Specs

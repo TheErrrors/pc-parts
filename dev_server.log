@@ -2,172 +2,18 @@
 > my-app@0.1.0 dev
 > next dev
 
+⚠ Port 3000 is in use by an unknown process, using available port 3001 instead.
 ▲ Next.js 16.2.4 (Turbopack)
-- Local:         http://localhost:3000
-- Network:       http://192.168.0.2:3000
-✓ Ready in 528ms
+- Local:         http://localhost:3001
+- Network:       http://192.168.0.2:3001
+- Environments: .env.local
+✓ Ready in 681ms
+⨯ Another next dev server is already running.
 
-○ Compiling / ...
- GET / 200 in 5.6s (next.js: 4.7s, application-code: 862ms)
-[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+- Local:        http://localhost:3000
+- PID:          256080
+- Dir:          /app
+- Log:          .next/dev/logs/next-development.log
 
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
-      <LoadingBoundary name="/" loading={null}>
-        <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
-          <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} unauthorized={undefined} ...>
-            <RedirectBoundary>
-              <RedirectErrorBoundary router={{...}}>
-                <InnerLayoutRouter url="/" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
-                  <SegmentViewNode type="page" pagePath="src/page.tsx">
-                    <SegmentTrieNode>
-                    <Home>
-                      <main className="relative z...">
-                        <section className="max-w-[900...">
-                          <div>
-                          <h1>
-                          <p>
-                          <SearchBar>
-                            <div className="max-w-[700..." ref={{current:null}}>
-                              <form onSubmit={function handleSearch}>
-                                <input
-                                  className="search-bar w-full bg-surface-container-lowest border-2 border-surface-con..."
-                                  placeholder="Search components... e.g., Ryzen 7 7800X3D, RTX 4070"
-                                  type="text"
-                                  value=""
-                                  onChange={function onChange}
-                                  onFocus={function onFocus}
--                                 style={{caret-color:"transparent"}}
-                                >
-                                ...
-                              ...
-                        ...
-                  ...
-                ...
- 
- GET /products/graphics-cards 200 in 3.4s (next.js: 3.2s, application-code: 245ms)
- GET /auth 200 in 740ms (next.js: 637ms, application-code: 102ms)
-[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
-      <RedirectBoundary>
-        <RedirectErrorBoundary router={{...}}>
-          <InnerLayoutRouter url="/auth" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
-            <SegmentViewNode type="page" pagePath="src/auth/p...">
-              <SegmentTrieNode>
-              <ClientPageRoot Component={function AuthPage} serverProvidedParams={{...}}>
-                <AuthPage params={Promise} searchParams={Promise}>
-                  <div className="flex-1 w-f...">
-                    <div>
-                    <div className="w-full md:...">
-                      <div>
-                      <div className="w-full max...">
-                        <h2>
-                        <p>
-                        <div>
-                        <div>
-                        <form className="space-y-5" onSubmit={function onSubmit}>
-                          <div>
-                            <label>
-                            <Input type="email" placeholder="you@exampl..." required={true}>
-                              <input
-                                className={"w-full bg-surface-container-lowest border border-surface-container-high r..."}
-                                type="email"
-                                placeholder="you@example.com"
-                                required={true}
--                               style={{caret-color:"transparent"}}
-                              >
-                          <div>
-                            <div>
-                            <Input type="password" placeholder="••••••••" required={true}>
-                              <input
-                                className={"w-full bg-surface-container-lowest border border-surface-container-high r..."}
-                                type="password"
-                                placeholder="••••••••"
-                                required={true}
--                               style={{caret-color:"transparent"}}
-                              >
-                          ...
-                        ...
-            ...
-          ...
- 
- GET /auth 200 in 115ms (next.js: 6ms, application-code: 109ms)
-[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
-
-- A server/client branch `if (typeof window !== 'undefined')`.
-- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
-- Date formatting in a user's locale which doesn't match the server.
-- External changing data without sending a snapshot of it along with the HTML.
-- Invalid HTML tag nesting.
-
-It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
-
-https://react.dev/link/hydration-mismatch
-
-  ...
-    <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
-      <RedirectBoundary>
-        <RedirectErrorBoundary router={{...}}>
-          <InnerLayoutRouter url="/auth" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} segmentPath={[...]} ...>
-            <SegmentViewNode type="page" pagePath="src/auth/p...">
-              <SegmentTrieNode>
-              <ClientPageRoot Component={function AuthPage} serverProvidedParams={{...}}>
-                <AuthPage params={Promise} searchParams={Promise}>
-                  <div className="flex-1 w-f...">
-                    <div>
-                    <div className="w-full md:...">
-                      <div>
-                      <div className="w-full max...">
-                        <h2>
-                        <p>
-                        <div>
-                        <div>
-                        <form className="space-y-5" onSubmit={function onSubmit}>
-                          <div>
-                            <label>
-                            <Input type="email" placeholder="you@exampl..." required={true}>
-                              <input
-                                className={"w-full bg-surface-container-lowest border border-surface-container-high r..."}
-                                type="email"
-                                placeholder="you@example.com"
-                                required={true}
--                               style={{caret-color:"transparent"}}
-                              >
-                          <div>
-                            <div>
-                            <Input type="password" placeholder="••••••••" required={true}>
-                              <input
-                                className={"w-full bg-surface-container-lowest border border-surface-container-high r..."}
-                                type="password"
-                                placeholder="••••••••"
-                                required={true}
--                               style={{caret-color:"transparent"}}
-                              >
-                          ...
-                        ...
-            ...
-          ...
- 
-  Reload env: .env.local
+Run kill 256080 to stop it.
+[?25h

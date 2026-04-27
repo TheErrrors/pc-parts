@@ -7,11 +7,12 @@ import { createClient } from "@/utils/supabase/server";
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage({ searchParams }: { searchParams: { category?: string, page?: string, query?: string } }) {
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string, page?: string, query?: string }> }) {
+  const resolvedSearchParams = await searchParams;
   const supabase = createClient();
-  const category = searchParams.category;
-  const query = searchParams.query;
-  const page = parseInt(searchParams.page || '1');
+  const category = resolvedSearchParams.category;
+  const query = resolvedSearchParams.query;
+  const page = parseInt(resolvedSearchParams.page || '1');
   const limit = 20;
   const start = (page - 1) * limit;
   const end = start + limit - 1;
@@ -23,7 +24,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { c
   }
 
   if (query) {
-    queryBuilder = queryBuilder.ilike('name', `%${query}%`);
+    queryBuilder = queryBuilder.or(`name.ilike.%${query}%,brand.ilike.%${query}%`);
   }
 
   const { data: products, error } = await queryBuilder;
