@@ -5,7 +5,21 @@ import { Checkbox } from "@/components/ui/Checkbox";
 import { Toggle } from "@/components/ui/Toggle";
 import { RangeSlider } from "@/components/ui/RangeSlider";
 
+import { useRouter, useSearchParams } from "next/navigation";
+
 export function Filters() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleCategoryChange = (category: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (category) {
+      params.set("category", category);
+    } else {
+      params.delete("category");
+    }
+    router.push(`/products?${params.toString()}`);
+  }
   return (
     <div className="w-[280px] shrink-0 hidden lg:block sticky top-24 self-start">
       <div className="flex items-center justify-between mb-6">
@@ -16,13 +30,14 @@ export function Filters() {
       </div>
 
       <div className="space-y-8">
-        {/* Chipset */}
+        {/* Categories */}
         <div>
-          <h3 className="font-body-sm font-semibold text-on-surface mb-3">Chipset</h3>
+          <h3 className="font-body-sm font-semibold text-on-surface mb-3">Categories</h3>
           <div className="space-y-2.5">
-            <Checkbox label="RTX 4070" />
-            <Checkbox label="RTX 4070 Ti" />
-            <Checkbox label="RX 7800 XT" />
+            <Checkbox label="Graphics Card" onChange={() => handleCategoryChange("Graphics Card")} checked={searchParams.get("category") === "Graphics Card"} />
+            <Checkbox label="Processor" onChange={() => handleCategoryChange("Processor")} checked={searchParams.get("category") === "Processor"} />
+            <Checkbox label="Motherboard" onChange={() => handleCategoryChange("Motherboard")} checked={searchParams.get("category") === "Motherboard"} />
+            <Checkbox label="Cabinet" onChange={() => handleCategoryChange("Cabinet")} checked={searchParams.get("category") === "Cabinet"} />
           </div>
         </div>
 

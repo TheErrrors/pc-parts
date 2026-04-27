@@ -53,33 +53,22 @@ const localPrices = [
   },
 ];
 
-const productData = {
-  title: "ASUS RTX 4070 Dual OC",
-  mpn: "DUAL-RTX4070-O12G",
-  msrp: 59990,
-  specs: {
-    Architecture: "Ada Lovelace",
-    VRAM: "12GB GDDR6X",
-    CoreClock: "2550 MHz",
-    TDP: "200W",
-  },
-  fullSpecs: {
-    "Dimensions": "267 x 136 x 51 mm",
-    "Slot Size": "2.5 Slot",
-    "Recommended PSU": "650W",
-    "Power Connectors": "1x 8-pin",
-    "Display Outputs": "3x DP 1.4a, 1x HDMI 2.1",
-    "CUDA Cores": "5888",
-    "Memory Bus": "192-bit",
-    "Maximum Display Support": "4",
-    "HDCP Support": "2.3",
-    "OpenGL": "4.6",
+
+
+import { createClient } from "@/utils/supabase/server";
+
+export const dynamic = 'force-dynamic';
+
+export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+  const supabase = createClient();
+  const { data: product } = await supabase.from('products').select('*').eq('slug', params.slug).single();
+
+  if (!product) {
+    return <div className="pt-32 text-center text-xl">Product not found</div>;
   }
-};
 
-
-export default function ProductDetailPage({ params }: { params: { "product-name": string, id: string } }) {
-  const category = params['product-name'];
+  const isOutOfStock = product.is_in_stock === false;
+  const formattedPrice = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(product.price);
 
   return (
     <>
@@ -90,33 +79,49 @@ export default function ProductDetailPage({ params }: { params: { "product-name"
           <nav className="flex items-center gap-2 font-body-sm text-on-surface-variant mb-6">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <Link href={`/products/${category}`} className="hover:text-primary transition-colors">Graphics Cards</Link>
+            <Link href="/products" className="hover:text-primary transition-colors">Components</Link>
             <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-            <span className="text-on-surface font-medium">{productData.title}</span>
+            <Link href={`/products?category=${product.category}`} className="hover:text-primary transition-colors">{product.category}</Link>
+            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+            <span className="text-on-surface font-medium">{product.name}</span>
           </nav>
 
           {/* Product Overview Header (1:2 Grid) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
 
-            {/* Left Column: Image Container */}
+            {/* Left Column: Image Gallery */}
             <div className="col-span-1">
-              <div className="bg-surface-container-lowest border border-surface-container-high rounded-2xl h-[320px] flex items-center justify-center shadow-sm">
-                <span className="material-symbols-outlined text-[120px] text-surface-container-high">
-                  developer_board
-                </span>
+              <div className="bg-surface-container-lowest border border-surface-container-high rounded-2xl h-[320px] flex items-center justify-center shadow-sm overflow-hidden p-4">
+                {product.images && product.images.length > 0 ? (
+                  <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain" />
+                ) : (
+                  <span className="material-symbols-outlined text-[120px] text-surface-container-high">
+                    developer_board
+                  </span>
+                )}
               </div>
+              {/* Optional: Gallery thumbnails could go here */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+                   {product.images.map((img: string, i: number) => (
+                      <div key={i} className="w-16 h-16 border rounded-md shrink-0 p-1 flex items-center justify-center cursor-pointer hover:border-primary">
+                          <img src={img} alt="" className="w-full h-full object-contain" />
+                      </div>
+                   ))}
+                </div>
+              )}
             </div>
 
             {/* Right Column: Details */}
             <div className="col-span-1 lg:col-span-2 flex flex-col justify-center">
               <h1 className="text-headline-lg font-display text-on-surface mb-3">
-                {productData.title}
+                {product.name}
               </h1>
 
               {/* Tags Row */}
               <div className="flex flex-wrap items-center gap-3 mb-8">
                 <span className="px-3 py-1 bg-surface-container rounded-md font-body-sm text-[13px] text-on-surface-variant border border-surface-container-high">
-                  MPN: {productData.mpn}
+                  Brand: {product.brand || product.category}
                 </span>
                 <span className="flex items-center gap-1.5 px-3 py-1 bg-[#22c55e]/10 text-[#006c49] rounded-md font-body-sm text-[13px] border border-[#22c55e]/20">
                   <span className="material-symbols-outlined text-[16px]">verified</span>
@@ -124,28 +129,41 @@ export default function ProductDetailPage({ params }: { params: { "product-name"
                 </span>
               </div>
 
-              {/* MSRP Area */}
+              {/* Price Area */}
               <div className="mb-8">
                 <div className="font-label-md text-on-surface-variant tracking-wider uppercase mb-1">
-                  Official MSRP
+                  Current Lowest Price
                 </div>
-                <div className="flex items-end gap-2">
-                  <span className="font-price-lg text-primary tabular-nums text-4xl">
-                    ₹{productData.msrp.toLocaleString("en-IN")}
-                  </span>
-                  <span className="font-body-sm text-on-surface-variant mb-1">Incl. GST</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-end gap-2">
+                    <span className="font-price-lg text-primary tabular-nums text-4xl">
+                      {formattedPrice}
+                    </span>
+                    <span className="font-body-sm text-on-surface-variant mb-1">Incl. GST</span>
+                  </div>
+                  {isOutOfStock ? (
+                    <span className="text-sm font-bold text-red-500 uppercase tracking-wider bg-red-50 px-3 py-1 rounded-md">Out of Stock</span>
+                  ) : (
+                    <span className="text-sm font-bold text-green-600 uppercase tracking-wider bg-green-50 px-3 py-1 rounded-md">In Stock</span>
+                  )}
+                </div>
+
+                <div className="mt-4">
+                   <Button variant="primary" disabled={isOutOfStock} className="h-12 px-8 text-base">
+                      {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                   </Button>
                 </div>
               </div>
 
               {/* Quick Specs Grid (2x2) */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {Object.entries(productData.specs).map(([key, value]) => (
+                {Object.entries(product.specs || {}).slice(0, 4).map(([key, value]) => (
                   <div key={key} className="flex flex-col">
                     <span className="font-label-md text-on-surface-variant text-[11px] uppercase tracking-wide mb-1">
                       {key.replace(/([A-Z])/g, ' $1').trim()}
                     </span>
                     <span className="font-body-sm font-semibold text-on-surface">
-                      {value}
+                      {value as string}
                     </span>
                   </div>
                 ))}
@@ -275,13 +293,13 @@ export default function ProductDetailPage({ params }: { params: { "product-name"
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 border border-surface-container-high rounded-xl overflow-hidden">
-              {Object.entries(productData.fullSpecs).map(([key, value], index) => (
+              {Object.entries(product.specs || {}).map(([key, value], index) => (
                 <div
                   key={key}
                   className={`flex flex-col sm:flex-row sm:items-center py-3 px-4 ${Math.floor(index / 2) % 2 === 0 ? "bg-surface" : "bg-surface-container-lowest"} ${index % 2 !== 0 ? "border-l border-surface-container-high" : ""} border-b border-surface-container-high`}
                 >
                   <span className="font-label-md text-on-surface-variant w-48 shrink-0">{key}</span>
-                  <span className="font-body-sm text-on-surface font-medium">{value}</span>
+                  <span className="font-body-sm text-on-surface font-medium">{value as string}</span>
                 </div>
               ))}
             </div>

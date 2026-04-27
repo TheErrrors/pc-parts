@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const searchResults = [
   { id: 1, title: "AMD Ryzen 7 7800X3D", subtitle: "CPU - Gaming Processor", price: 38499, icon: "memory", url: "/products/cpus/1" },
@@ -15,8 +16,14 @@ export function SearchBar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsDropdownOpen(false);
+    if (query.trim()) {
+      router.push(`/products?query=${encodeURIComponent(query.trim())}`);
+    }
   };
 
   useEffect(() => {

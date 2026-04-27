@@ -8,19 +8,40 @@ import Link from "next/link";
 interface ProductCardProps {
   product: {
     id: string;
-    title: string;
+    name: string;
+    slug: string;
+    category?: string;
     price: number;
-    specs: string[];
-    icon: string;
+    specs: Record<string, string>;
+    images: string[];
+    is_in_stock?: boolean;
   };
   isSelected?: boolean;
   onToggleCompare?: (id: string) => void;
 }
 
+function getOptimizedImage(url: string | undefined) {
+  if (!url) return null;
+  if (url.includes('cloudinary.com')) {
+    // Basic auto-optimization flag injection for Cloudinary
+    return url.replace('/upload/', '/upload/f_auto,q_auto,w_400/');
+  }
+  return url;
+}
 
-export function ProductCard({ product, isSelected, onToggleCompare, category = "graphics-cards" }: ProductCardProps & { category?: string }) {
+export function ProductCard({ product, isSelected, onToggleCompare }: ProductCardProps) {
+  const mainImage = getOptimizedImage(product.images?.[0]);
+  const isOutOfStock = product.is_in_stock === false;
+
+  // Simple priority map for "Quick Specs" preview
+  const priorityKeys = ["Chipset", "VRAM", "Socket", "Form Factor", "Capacity", "Memory Type", "Wattage", "Efficiency"];
+  const quickSpecs = Object.entries(product.specs || {})
+    .filter(([key]) => priorityKeys.includes(key))
+    .map(([_, value]) => value)
+    .slice(0, 2);
+
   return (
-    <div className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full`}>
+    <div className={`bg-surface-container-lowest border ${isSelected ? "border-primary shadow-sm" : "border-surface-container-high hover:border-primary hover:shadow-layer-2"} rounded-2xl p-4 transition-all cursor-pointer group relative flex flex-col h-full ${isOutOfStock ? 'opacity-70' : ''}`}>
       {/* Compare Checkbox */}
       <div className="absolute top-4 left-4 z-10">
         <Checkbox
@@ -32,18 +53,22 @@ export function ProductCard({ product, isSelected, onToggleCompare, category = "
       </div>
 
       {/* Image Area */}
-      <div className="bg-surface-container rounded-xl h-[180px] flex items-center justify-center mb-4 relative mt-8">
-        <span className="material-symbols-outlined text-[64px] text-on-surface-variant/30">
-          {product.icon}
-        </span>
+      <div className="bg-surface-container rounded-xl h-[180px] flex items-center justify-center mb-4 relative mt-8 overflow-hidden">
+        {mainImage ? (
+          <img src={mainImage} alt={product.name} className="object-contain w-full h-full p-4" />
+        ) : (
+          <span className="material-symbols-outlined text-[64px] text-on-surface-variant/30">
+            developer_board
+          </span>
+        )}
       </div>
 
       {/* Spec Tags */}
-      <div className="flex flex-wrap gap-2 mb-3">
-        {product.specs.map((spec, index) => (
+      <div className="flex flex-wrap gap-2 mb-3 h-6 overflow-hidden">
+        {quickSpecs.map((spec, index) => (
           <span
             key={index}
-            className="px-2 py-1 bg-surface text-on-surface-variant rounded-full font-label-md text-[11px]"
+            className="px-2 py-1 bg-surface text-on-surface-variant rounded-full font-label-md text-[11px] truncate max-w-[120px]"
           >
             {spec}
           </span>
@@ -52,18 +77,23 @@ export function ProductCard({ product, isSelected, onToggleCompare, category = "
 
       {/* Title */}
       <h3 className="font-body-md font-semibold text-on-surface line-clamp-2 mt-auto mb-2">
-        {product.title}
+        {product.name}
       </h3>
 
-      {/* Price */}
-      <div className="font-price-lg text-primary mb-4 tabular-nums">
-        ₹{product.price.toLocaleString("en-IN")}
+      {/* Price & Stock */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="font-price-lg text-primary tabular-nums">
+          {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(product.price)}
+        </div>
+        {isOutOfStock && (
+          <span className="text-[10px] font-bold text-red-500 uppercase tracking-wider bg-red-50 px-2 py-1 rounded-sm">Out of Stock</span>
+        )}
       </div>
 
       {/* Action */}
-      <Button variant="ghost" className="w-full mt-auto" asChild>
-        <Link href={`/products/${category}/${product.id}`}>
-          View Deals
+      <Button variant="ghost" className="w-full mt-auto" asChild disabled={isOutOfStock}>
+        <Link href={`/product/${product.slug}`}>
+          {isOutOfStock ? "Out of Stock" : "View Deals"}
         </Link>
       </Button>
     </div>
