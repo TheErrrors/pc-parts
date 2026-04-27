@@ -47,11 +47,11 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
               <span className="material-symbols-outlined text-[16px]">chevron_right</span>
               <Link href="#" className="hover:text-primary transition-colors">Components</Link>
               <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-              <span className="text-on-surface font-medium capitalize">{category ? category.replace('-', ' ') : 'All Components'}</span>
+              <span className="text-on-surface font-medium capitalize">{category ? `${category.replace('-', ' ')}s` : 'All Components'}</span>
             </nav>
 
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-              <h1 className="font-display text-headline-lg text-on-surface capitalize">{category ? category.replace('-', ' ') : 'All Components'}</h1>
+              <h1 className="font-display text-headline-lg text-on-surface capitalize">{category ? `${category.replace('-', ' ')}s` : 'All Components'}</h1>
               <div className="flex items-center gap-2">
                 <span className="font-body-sm text-on-surface-variant">Sort by:</span>
                 <Select

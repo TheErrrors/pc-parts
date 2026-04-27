@@ -6,8 +6,58 @@ import { ProductGrid } from "@/components/ui/ProductGrid";
 import { SearchBar } from "@/components/SearchBar";
 import { Carousel } from "@/components/Carousel";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/server";
 
-export default function Home() {
+const categoryMap: Record<string, string> = {
+  'CPU': 'Processor',
+  'GPU': 'Graphics Card',
+  'Motherboard': 'Motherboard',
+  'RAM': 'Memory',
+  'Storage': 'Storage',
+  'Case': 'Cabinet',
+  'PSU': 'Power Supply',
+  'Cooler': 'Cooling',
+  'Monitor': 'Monitor',
+  'Mouse': 'Mouse',
+  'Keyboard': 'Keyboard',
+  'Peripherals': 'Peripherals',
+};
+
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const supabase = createClient();
+
+  const categoryCounts: Record<string, number> = {};
+
+  // Fetch counts safely (ignoring errors if DB is unpopulated)
+  for (const dbCategory of Object.values(categoryMap)) {
+    try {
+      const { count } = await supabase
+        .from('products')
+        .select('*', { count: 'exact', head: true })
+        .eq('category', dbCategory);
+      categoryCounts[dbCategory] = count || 0;
+    } catch {
+      categoryCounts[dbCategory] = 0;
+    }
+  }
+
+  const categories = [
+    { icon: "memory", name: "CPU" },
+    { icon: "developer_board", name: "GPU" },
+    { icon: "schema", name: "Motherboard" },
+    { icon: "dns", name: "RAM" },
+    { icon: "save", name: "Storage" },
+    { icon: "computer", name: "Case" },
+    { icon: "power", name: "PSU" },
+    { icon: "mode_fan", name: "Cooler" },
+    { icon: "desktop_windows", name: "Monitor" },
+    { icon: "mouse", name: "Mouse" },
+    { icon: "keyboard", name: "Keyboard" },
+    { icon: "headset_mic", name: "Peripherals" },
+  ];
+
   return (
     <>
 
@@ -32,23 +82,13 @@ export default function Home() {
         <section className="max-w-[1200px] mx-auto px-6">
           <SectionHeader title="Shop by Category" subtitle="Browse 10,000+ verified products" />
           <ProductGrid>
-            {[
-              { icon: "memory", name: "CPU", count: "1,247" },
-              { icon: "developer_board", name: "GPU", count: "892" },
-              { icon: "schema", name: "Motherboard", count: "954" },
-              { icon: "dns", name: "RAM", count: "634" },
-              { icon: "save", name: "Storage", count: "1,456" },
-              { icon: "computer", name: "Case", count: "423" },
-              { icon: "power", name: "PSU", count: "312" },
-              { icon: "mode_fan", name: "Cooler", count: "287" },
-              { icon: "desktop_windows", name: "Monitor", count: "567" },
-              { icon: "mouse", name: "Mouse", count: "823" },
-              { icon: "keyboard", name: "Keyboard", count: "645" },
-              { icon: "headset_mic", name: "Peripherals", count: "452" },
-            ].map((category) => (
+            {categories.map((category) => {
+              const dbCategory = categoryMap[category.name] || category.name;
+              const count = categoryCounts[dbCategory] || 0;
+              return (
               <Link
                 key={category.name}
-                href="#"
+                href={`/products?category=${encodeURIComponent(dbCategory)}`}
                 className="bg-surface-container-lowest border border-surface-container-high rounded-2xl p-5 flex flex-col items-center justify-center text-center hover:border-primary hover:shadow-md hover:-translate-y-1 transition-all group h-[160px]"
               >
                 <div className="w-14 h-14 bg-surface-container rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
@@ -57,9 +97,9 @@ export default function Home() {
                   </span>
                 </div>
                 <span className="font-body-sm font-semibold text-on-surface mb-1">{category.name}</span>
-                <span className="font-label-md text-[11px] text-on-surface-variant font-normal">{category.count} products</span>
+                <span className="font-label-md text-[11px] text-on-surface-variant font-normal">{count.toLocaleString('en-IN')} products</span>
               </Link>
-            ))}
+            )})}
           </ProductGrid>
         </section>
 
